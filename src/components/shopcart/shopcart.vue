@@ -1,4 +1,5 @@
 <template>
+  <!--购物车页-->
   <div class="shopcart">
     <div class="content" @click.stop.prevent="toggleList">
       <!--左侧-->

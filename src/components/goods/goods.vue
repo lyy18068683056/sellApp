@@ -1,4 +1,5 @@
 <template>
+  <!--商品页-->
   <div class="goods">
     <!--左侧菜单-->
     <div class="menu-wrapper" v-el:menu-wrapper>
@@ -15,7 +16,7 @@
     <!--右侧菜单-->
     <div class="foods-wrapper" v-el:foods-wrapper>
       <ul>
-        <li v-for="item in goods" class="food-list food-list-hook">
+        <li @click="selectFood(food,$event)" v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="food in item.foods" class="food-item border-1px">
@@ -51,12 +52,14 @@
     <!--购物车-->
     <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
+  <food :food="selectedFood" v-ref:food></food>
 </template>
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
-import shopcart from 'components/shopcart/shopcart'
-import cartcontrol from '../../components/cartcontrol/cartcontrol.vue'
+import shopcart from 'components/shopcart/shopcart';
+import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
+import food from 'components/food/food.vue';
 
 const ERR_OK=0;
 
@@ -70,7 +73,8 @@ const ERR_OK=0;
       return {
         goods:[],
         listHeight:[],
-        scrollY:0
+        scrollY:0,
+        selectedFood:{ }
       };
     },
     computed:{
@@ -125,11 +129,16 @@ const ERR_OK=0;
           this.foodsScroll.scrollToElement(el,300);
 //            console.log(index)
       },
+      selectFood(food,event) {
+        if(!event._constructed){
+          return;
+        }
+        this.selectedFood=food;
+        this.$refs.food.show();
+      },
       _initScroll(){
-//          初始化BScroll  让menuwrapper和foodswrapper可以滚动
-        this.menuScroll=new BScroll(this.$els.menuWrapper,{
-//            点击左侧的时候传入的属性
-            click:true
+        this.menuScroll=new BScroll(this.$els.menuWrapper,{   //          初始化BScroll  让menuwrapper和foodswrapper可以滚动
+            click:true   //            点击左侧的时候传入的属性
         });
         this.foodsScroll=new BScroll(this.$els.foodsWrapper,{
 //            scroll在滚动过程中告诉实时的位置
@@ -142,10 +151,8 @@ const ERR_OK=0;
 //            console.log(this.scrollY)
         })
       },
-//      每个区块对应的高度
-      _calculateHeight(){
-//          找到每个li  每个区块的
-        let foodList= this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+      _calculateHeight(){  //      每个区块对应的高度
+        let foodList= this.$els.foodsWrapper.getElementsByClassName('food-list-hook');  //          找到每个li  每个区块的
         let height=0;
         this.listHeight.push(height);
         for(let i=0;i<foodList.length;i++){
@@ -154,17 +161,16 @@ const ERR_OK=0;
           this.listHeight.push(height);
         }
       },
-//      添加商品产生抛物线小球
-//      体验优化,异步执行下落动画
-      _drop(target) {
-        this.$nextTick(() => {
+      _drop(target) {   //      添加商品产生抛物线小球
+        this.$nextTick(() => {   //      体验优化,异步执行下落动画
           this.$refs.shopcart.drop(target);
         })
       }
     },
     components:{
       shopcart,
-      cartcontrol
+      cartcontrol,
+      food
     },
     events:{
       'cart.add'(target) {

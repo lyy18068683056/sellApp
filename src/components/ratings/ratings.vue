@@ -1,4 +1,5 @@
 <template>
+  <!--评价页-->
   <div>
     我是ratings
   </div>

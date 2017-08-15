@@ -1,4 +1,5 @@
 <template>
+  <!--商品数量的加加减减-->
   <div class="cartcontrol">
     <div class="cart-decrease" v-show="food.count>0" @click="decreaseCart" transition="move">
       <span class="inner  icon-remove_circle_outline"></span>
