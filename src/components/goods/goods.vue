@@ -5,7 +5,7 @@
     <div class="menu-wrapper" v-el:menu-wrapper>
       <ul>
         <li v-for="item in goods" class="menu-item" :class="{'current':currentIndex === $index}"
-        @click="selectMenu($index,$event)">
+            @click="selectMenu($index,$event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
@@ -16,10 +16,10 @@
     <!--右侧菜单-->
     <div class="foods-wrapper" v-el:foods-wrapper>
       <ul>
-        <li @click="selectFood(food,$event)" v-for="item in goods" class="food-list food-list-hook">
+        <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
+            <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
               <div class="icon">
                 <img :src="food.icon" width="57" height="57">
               </div>
@@ -56,12 +56,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import BScroll from 'better-scroll';
-import shopcart from 'components/shopcart/shopcart';
-import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
-import food from 'components/food/food.vue';
+  import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
+  import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
+  import food from 'components/food/food.vue';
 
-const ERR_OK=0;
+  const ERR_OK=0;
 
   export default{
     props:{
@@ -81,13 +81,13 @@ const ERR_OK=0;
 //        计算左边栏的索引   让右边的scrollY与左边的索引相对应
       currentIndex(){
         for(let i=0;i<this.listHeight.length;i++){
-            let height1 = this.listHeight[i];
-            let height2 = this.listHeight[i+1];
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i+1];
 //            console.log('height1'+ height1)
 //            console.log('height2'+ height2)
-            if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)){
-                return i;
-            }
+          if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)){
+            return i;
+          }
         }
         return 0;
       },
@@ -119,14 +119,14 @@ const ERR_OK=0;
     },
     methods:{
 //        点击左边栏对应的索引
-  		//在PC端晕倒点击触发两次的问题,在参数里添加event 写一个判断
+      //在PC端晕倒点击触发两次的问题,在参数里添加event 写一个判断
       selectMenu(index,event){
-          if(!event._constructed){
-              return;
-          }
-          let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
-          let el = foodList[index];
-          this.foodsScroll.scrollToElement(el,300);
+        if(!event._constructed){
+          return;
+        }
+        let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodsScroll.scrollToElement(el,300);
 //            console.log(index)
       },
       selectFood(food,event) {
@@ -138,16 +138,16 @@ const ERR_OK=0;
       },
       _initScroll(){
         this.menuScroll=new BScroll(this.$els.menuWrapper,{   //          初始化BScroll  让menuwrapper和foodswrapper可以滚动
-            click:true   //            点击左侧的时候传入的属性
+          click:true   //            点击左侧的时候传入的属性
         });
         this.foodsScroll=new BScroll(this.$els.foodsWrapper,{
 //            scroll在滚动过程中告诉实时的位置
-						click:true,
-            probeType:3
+          click:true,
+          probeType:3
         });
 //        用foodsScroll去监听一个事件
         this.foodsScroll.on('scroll',(pos) => {
-            this.scrollY = Math.abs(Math.round(pos.y));
+          this.scrollY = Math.abs(Math.round(pos.y));
 //            console.log(this.scrollY)
         })
       },
@@ -156,8 +156,8 @@ const ERR_OK=0;
         let height=0;
         this.listHeight.push(height);
         for(let i=0;i<foodList.length;i++){
-            let item=foodList[i];
-            height += item.clientHeight;
+          let item=foodList[i];
+          height += item.clientHeight;
           this.listHeight.push(height);
         }
       },
@@ -274,10 +274,6 @@ const ERR_OK=0;
           .price
             font-weight :700
             line-height :24px
-          .cartcontroll-wrapper
-            position :absolute
-            right:0
-            bottom:12px
             .now
               margin-right :8px
               font-size :14px
@@ -286,4 +282,9 @@ const ERR_OK=0;
               text-decoration :line-through
               font-size :10px
               color:rgb(147,153,159)
+          .cartcontroll-wrapper
+            position :absolute
+            right:0
+            bottom:12px
+
 </style>
