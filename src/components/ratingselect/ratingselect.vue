@@ -1,4 +1,5 @@
 <template>
+  <!--评价点击选择-->
   <div class="ratingselect">
     <!--评价类型-->
     <div class="rating-type border-1px">

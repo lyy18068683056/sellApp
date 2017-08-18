@@ -77,7 +77,7 @@
   </div>
 </template>
 
-<script type="type/ecmascript-6">
+<script type="text/ecmascript-6">
 import star from '../../components/star/star'
   export default{
     props:{

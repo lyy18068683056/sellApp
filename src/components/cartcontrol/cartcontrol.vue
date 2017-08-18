@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 	import Vue from 'vue';
 //购物车组件的实现
   export default{
